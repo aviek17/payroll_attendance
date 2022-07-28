@@ -605,7 +605,7 @@ const changeEmployeePassword = async () => {
 
           <div className="container">
             <h5>
-              Working Hours for department
+              Pending Leaves across department
             </h5>
             <hr />
             <ReactECharts option={dashesPending} style={{ height: '450px', width: '100%' }} />
