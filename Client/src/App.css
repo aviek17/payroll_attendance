@@ -1,0 +1,14 @@
+ 
+  .buttonDesign{
+      text-align: center;
+      padding-top: 13px;
+      height:50px;
+      background: rgb(65, 65, 227);
+      color: rgb(244, 244, 244);
+      text-decoration: none;
+      margin-bottom: 10px;
+  }
+  .buttonDesign:hover{
+    background: rgb(231, 231, 234);
+      color: rgb(62, 7, 241);
+  }
