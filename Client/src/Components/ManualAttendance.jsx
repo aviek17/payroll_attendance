@@ -142,6 +142,7 @@ const ManualAttendance = () => {
         text: res.data.message
 
     })
+    history.push("/employeeviewattendance")
     }
     window.localStorage.removeItem("In")
     window.localStorage.removeItem("out")

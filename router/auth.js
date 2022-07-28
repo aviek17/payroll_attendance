@@ -389,66 +389,71 @@ router.post("/addAttendance", async (req, res) => {
     try {
         //console.log(time_in);
         //console.log(time_out);
-        const [hoursin, minutein] = time_in.split(':');
-        const [hoursout, minuteout] = time_out.split(':');
-
-        const findEmployee = await Attendance.findOne({ name: name });
-        //console.log(findEmployee)
-        if (!findEmployee) {
-            console.log(21456);
-            const hours = hoursout - hoursin
-            const minute = minuteout - minutein
-            const workingHour = hours + " hours " + minute + " minutes"
-            const dayName = getDayName(dayIndex)
-            //console.log(dayName);
-            const response = await new Attendance({
-                name: name,
-                dept: req.body.dept,
-                empId: req.body.empId,
-                records: [
-                    {
-
-                        day: dayName,
-                        date: date,
-                        time_in: time_in,
-                        time_out: time_out,
-                        workingHours: workingHour
-                    }
-                ]
-            });
-            const attendance = await response.save();
-
-            if (attendance) {
-                return res.status(201).json({ message: "Attendance Recorded Successfully" })
-            } else {
-                return res.send({ message: "Attendance failed to record" })
-            }
-        } else {
-            console.log(5555)
-            const hours = hoursout - hoursin
-            //console.log(hours);
-            const minute = minuteout - minutein
-            //console.log(minute);
-            const workingHour = hours + " hours " + minute + " minutes"
-            const dayName = getDayName(dayIndex)
-            //console.log(dayName);
-            var data = {
-
-                day: dayName,
-                date: date,
-                time_in: time_in,
-                time_out: time_out,
-                workingHours: workingHour
-            }
-
-            const response = await findEmployee.newAttendance(data)
-            //console.log(response);
-            if(response){
-                return res.status(201).json({ message: "Attendance Recorded Successfully" })
-            }
-            
+        if (!time_in || !time_out || time_in == 'null' || time_out == 'null') {
+            return res.status(202).json({ message: "Cannot add attendance" })
         }
+        else {
+            const [hoursin, minutein] = time_in.split(':');
+            const [hoursout, minuteout] = time_out.split(':');
 
+            const findEmployee = await Attendance.findOne({ name: name });
+            //console.log(findEmployee)
+            if (!findEmployee) {
+                console.log(21456);
+                const hours = hoursout - hoursin
+                const minute = minuteout - minutein
+                const workingHour = hours + " hours " + minute + " minutes"
+                const dayName = getDayName(dayIndex)
+                //console.log(dayName);
+                const response = await new Attendance({
+                    name: name,
+                    dept: req.body.dept,
+                    empId: req.body.empId,
+                    records: [
+                        {
+
+                            day: dayName,
+                            date: date,
+                            time_in: time_in,
+                            time_out: time_out,
+                            workingHours: workingHour
+                        }
+                    ]
+                });
+                const attendance = await response.save();
+
+                if (attendance) {
+                    return res.status(201).json({ message: "Attendance Recorded Successfully" })
+                } else {
+                    return res.send({ message: "Attendance failed to record" })
+                }
+            } else {
+                console.log(5555)
+                const hours = hoursout - hoursin
+                //console.log(hours);
+                const minute = minuteout - minutein
+                //console.log(minute);
+                const workingHour = hours + " hours " + minute + " minutes"
+                const dayName = getDayName(dayIndex)
+                //console.log(dayName);
+                var data = {
+
+                    day: dayName,
+                    date: date,
+                    time_in: time_in,
+                    time_out: time_out,
+                    workingHours: workingHour
+                }
+
+                const response = await findEmployee.newAttendance(data)
+                //console.log(response);
+                if (response) {
+                    return res.status(201).json({ message: "Attendance Recorded Successfully" })
+                }
+
+            }
+
+        }
 
     } catch (err) {
         console.log(err);
